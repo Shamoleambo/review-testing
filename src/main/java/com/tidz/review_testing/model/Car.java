@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import java.time.Year;
 
 @Entity
-@Table(name = "cars")
 public class Car {
 
     @Id
@@ -21,6 +20,7 @@ public class Car {
     private Year year;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "owner_id")
     private Owner owner;
 
     public Car() {

@@ -1,23 +1,25 @@
 package com.tidz.review_testing.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "owners")
 public class Owner {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "first_name", nullable = false)
     private String firstName;
+    @Column(name = "last_name", nullable = false)
     private String lastName;
+    @Column(name = "email", nullable = false)
     private String email;
+    @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
