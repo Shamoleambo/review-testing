@@ -58,4 +58,20 @@ public class CarServiceTest {
         // Assert
         Assertions.assertThrows(ResourceNotFoundError.class, () -> service.getCarById(Mockito.anyLong()));
     }
+
+    @Test
+    public void methodGetCarByIdShouldReturnACar() {
+        // Arrange
+        Car car = new Car(CarType.WAGON, "Audi RS4", Year.of(1996));
+
+        // Act
+        Mockito.when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(car));
+        Car returnedCar = service.getCarById(Mockito.anyLong());
+
+        // Assert
+        Assertions.assertEquals(returnedCar.getType(), CarType.WAGON);
+        Assertions.assertEquals(returnedCar.getName(), "Audi RS4");
+        Assertions.assertEquals(returnedCar.getYear(), Year.of(1996));
+        Mockito.verify(repository, Mockito.times(1)).findById(Mockito.anyLong());
+    }
 }
