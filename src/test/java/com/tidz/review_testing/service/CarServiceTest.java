@@ -1,5 +1,6 @@
 package com.tidz.review_testing.service;
 
+import com.tidz.review_testing.exceptions.ResourceNotFoundError;
 import com.tidz.review_testing.model.Car;
 import com.tidz.review_testing.model.CarType;
 import com.tidz.review_testing.repository.CarRepository;
@@ -13,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.Year;
+import java.util.Optional;
 
 @SpringBootTest
 public class CarServiceTest {
@@ -44,5 +46,16 @@ public class CarServiceTest {
         Assertions.assertEquals(savedCar.getYear(), Year.of(1994));
 
         Mockito.verify(repository, Mockito.times(1)).save(Mockito.any(Car.class));
+    }
+
+    @Test
+    public void methodGetCarByIdShouldThrowIfCarIsNotFound() {
+        // Arrange
+
+        // Act
+        Mockito.when(repository.findById(Mockito.anyLong())).thenThrow(new ResourceNotFoundError("Could not find car"));
+
+        // Assert
+        Assertions.assertThrows(ResourceNotFoundError.class, () -> service.getCarById(Mockito.anyLong()));
     }
 }
