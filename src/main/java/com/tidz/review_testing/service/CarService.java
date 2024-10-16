@@ -23,6 +23,6 @@ public class CarService {
     }
 
     public Car getCarById(Long id) {
-        throw new ResourceNotFoundError("Could not find Car with id " + id);
+        return carRepository.findById(id).orElseThrow(() -> new ResourceNotFoundError("Could not find car with id " + id));
     }
 }
