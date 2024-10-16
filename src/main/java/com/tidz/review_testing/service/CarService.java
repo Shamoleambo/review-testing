@@ -1,5 +1,6 @@
 package com.tidz.review_testing.service;
 
+import com.tidz.review_testing.exceptions.ResourceNotFoundError;
 import com.tidz.review_testing.model.Car;
 import com.tidz.review_testing.repository.CarRepository;
 import jakarta.transaction.Transactional;
@@ -19,5 +20,9 @@ public class CarService {
     @Transactional
     public Car save(Car car) {
         return carRepository.save(car);
+    }
+
+    public Car getCarById(Long id) {
+        throw new ResourceNotFoundError("Could not find Car with id " + id);
     }
 }
