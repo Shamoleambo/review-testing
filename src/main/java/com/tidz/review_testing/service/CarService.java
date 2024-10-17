@@ -39,6 +39,11 @@ public class CarService {
 
     @Transactional
     public Car update(Long id, Car updatedCar) {
-        throw new ResourceNotFoundError("Could not find car with id " + id);
+        Car car = carRepository.findById(id).orElseThrow(() -> new ResourceNotFoundError("Could not find car with id " + id));
+        car.setType(updatedCar.getType());
+        car.setName(updatedCar.getName());
+        car.setYear(updatedCar.getYear());
+
+        return carRepository.save(car);
     }
 }
