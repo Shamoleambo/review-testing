@@ -49,6 +49,9 @@ public class CarService {
 
     @Transactional
     public void delete(Long id) {
-        throw new ResourceNotFoundError("Could not find car with id" + id);
+        carRepository.findById(id).ifPresentOrElse(carRepository::delete, () -> {
+            throw new ResourceNotFoundError("Could not find car with id " + id);
+        });
     }
+
 }
