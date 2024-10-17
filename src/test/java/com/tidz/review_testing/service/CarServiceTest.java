@@ -143,4 +143,13 @@ public class CarServiceTest {
         Mockito.verify(repository, Mockito.times(1)).findById(id);
         Mockito.verify(repository, Mockito.times(1)).save(foundCar);
     }
+
+    @Test
+    public void methodDeleteShouldThrowAnErrorIfCarIsNotFound() {
+        // Act
+        Mockito.doThrow(new ResourceNotFoundError("Could not find car to be deleted")).when(repository).deleteById(Mockito.anyLong());
+
+        // Assert
+        Assertions.assertThrows(ResourceNotFoundError.class, () -> service.delete(Mockito.anyLong()));
+    }
 }
