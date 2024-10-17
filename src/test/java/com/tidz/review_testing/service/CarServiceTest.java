@@ -107,4 +107,17 @@ public class CarServiceTest {
 
         Mockito.verify(repository, Mockito.times(1)).findAll();
     }
+
+    @Test
+    public void methodUpdateShouldThrowAnErrorIfCarIsNotFound() {
+        // Arrange
+
+        // Act
+        Mockito.when(repository.findById(Mockito.anyLong())).thenThrow(new ResourceNotFoundError("Could not find car"));
+
+        // Assert
+        Assertions.assertThrows(ResourceNotFoundError.class, () -> {
+            service.update(Mockito.anyLong(), Mockito.any(Car.class));
+        });
+    }
 }
