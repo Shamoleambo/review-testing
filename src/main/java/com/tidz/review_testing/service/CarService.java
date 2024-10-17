@@ -36,4 +36,9 @@ public class CarService {
             return cars;
         }
     }
+
+    @Transactional
+    public Car update(Long id, Car updatedCar) {
+        throw new ResourceNotFoundError("Could not find car with id " + id);
+    }
 }
