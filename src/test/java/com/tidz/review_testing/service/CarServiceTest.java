@@ -90,4 +90,21 @@ public class CarServiceTest {
             service.getAllCars();
         });
     }
+
+    @Test
+    public void methodGetAllCarsShouldReturnAllCars() {
+        // Arrange
+        List<Car> cars = Arrays.asList(new Car(CarType.WAGON, "Audi RS4", Year.of(1996)), new Car(CarType.SEDAN, "Civic", Year.of(1998)));
+
+        // Act
+        Mockito.when(repository.findAll()).thenReturn(cars);
+        List<Car> retrievedCars = service.getAllCars();
+
+        // Assert
+        Assertions.assertNotNull(retrievedCars);
+        Assertions.assertEquals(retrievedCars.size(), 2);
+        Assertions.assertEquals(retrievedCars.getFirst().getName(), "Audi RS4");
+
+        Mockito.verify(repository, Mockito.times(1)).findAll();
+    }
 }
