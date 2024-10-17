@@ -46,4 +46,9 @@ public class CarService {
 
         return carRepository.save(car);
     }
+
+    @Transactional
+    public void delete(Long id) {
+        throw new ResourceNotFoundError("Could not find car with id" + id);
+    }
 }
