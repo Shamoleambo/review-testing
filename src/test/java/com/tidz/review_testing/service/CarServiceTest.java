@@ -111,13 +111,36 @@ public class CarServiceTest {
     @Test
     public void methodUpdateShouldThrowAnErrorIfCarIsNotFound() {
         // Arrange
+        Long id = 1L;
 
         // Act
-        Mockito.when(repository.findById(Mockito.anyLong())).thenThrow(new ResourceNotFoundError("Could not find car"));
+        Mockito.when(repository.findById(id)).thenThrow(new ResourceNotFoundError("Could not find car"));
 
         // Assert
         Assertions.assertThrows(ResourceNotFoundError.class, () -> {
-            service.update(Mockito.anyLong(), Mockito.any(Car.class));
+            service.update(id, Mockito.any(Car.class));
         });
+    }
+
+    @Test
+    public void methodUpdateShouldUpdateAnCarAndReturnTheUpdatedValue() {
+        // Arrange
+        Car updatedCar = new Car(CarType.SEDAN, "Audi RS6", Year.of(1999));
+        Car foundCar = new Car(CarType.WAGON, "Audi RS4", Year.of(1996));
+        Long id = 1L;
+
+        // Act
+        Mockito.when(repository.findById(id)).thenReturn(Optional.of(foundCar));
+        Mockito.when(repository.save(foundCar)).thenReturn(updatedCar);
+        Car returnedCar = service.update(id, updatedCar);
+
+        // Assert
+        Assertions.assertNotNull(returnedCar);
+        Assertions.assertEquals(returnedCar.getType(), CarType.SEDAN);
+        Assertions.assertEquals(returnedCar.getName(), "Audi RS6");
+        Assertions.assertEquals(returnedCar.getYear(), Year.of(1999));
+
+        Mockito.verify(repository, Mockito.times(1)).findById(id);
+        Mockito.verify(repository, Mockito.times(1)).save(foundCar);
     }
 }
