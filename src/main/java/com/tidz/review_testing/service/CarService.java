@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CarService {
 
@@ -24,5 +26,9 @@ public class CarService {
 
     public Car getCarById(Long id) {
         return carRepository.findById(id).orElseThrow(() -> new ResourceNotFoundError("Could not find car with id " + id));
+    }
+
+    public List<Car> getAllCars() {
+        throw new ResourceNotFoundError("Could not find all cars");
     }
 }
