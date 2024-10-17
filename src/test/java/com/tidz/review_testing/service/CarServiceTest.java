@@ -14,6 +14,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.Year;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -73,5 +76,18 @@ public class CarServiceTest {
         Assertions.assertEquals(returnedCar.getName(), "Audi RS4");
         Assertions.assertEquals(returnedCar.getYear(), Year.of(1996));
         Mockito.verify(repository, Mockito.times(1)).findById(Mockito.anyLong());
+    }
+
+    @Test
+    public void methodGetAllCarsShouldThrowAnErrorIfCarsAreNotFound() {
+        // Arrange
+
+        // Act
+        Mockito.when(repository.findAll()).thenThrow(new ResourceNotFoundError("Cars not found"));
+
+        //Assert
+        Assertions.assertThrows(ResourceNotFoundError.class, () -> {
+            service.getAllCars();
+        });
     }
 }
