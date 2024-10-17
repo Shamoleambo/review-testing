@@ -29,6 +29,11 @@ public class CarService {
     }
 
     public List<Car> getAllCars() {
-        throw new ResourceNotFoundError("Could not find all cars");
+        List<Car> cars = carRepository.findAll();
+        if (cars.isEmpty()) {
+            throw new ResourceNotFoundError("Could not find all cars");
+        } else {
+            return cars;
+        }
     }
 }
